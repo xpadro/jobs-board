@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Employer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,13 @@ return new class extends Migration
     {
         Schema::create('job_listings', function (Blueprint $table) {
             $table->id();
+
+            //Foreign key to table employer. Above id() method creates an unsignedBigInteger type
+            //$table->unsignedBigInteger('employer_id');
+
+            //Another way of setting a foreign key
+            $table->foreignIdFor(Employer::class);
+            
             $table->string('title');
             $table->string('salary');
             $table->timestamps();
