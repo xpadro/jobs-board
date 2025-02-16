@@ -8,6 +8,10 @@ use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * 
+ * To generate n fake users into the database:
+ *  > php artisan tinker
+ *  > App\Models\User::factory(n)->create()
  */
 class UserFactory extends Factory
 {
@@ -34,6 +38,9 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the model's email address should be unverified.
+     * It will create a User using definition() and then modify 'email_verified_at'.
+     * For example:
+     *  > App\Model\User::factory()->unverified()->create()
      */
     public function unverified(): static
     {
