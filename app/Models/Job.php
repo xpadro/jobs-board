@@ -10,6 +10,9 @@ use Illuminate\Support\Arr;
 class Job extends Model {
     use HasFactory;
 
+    //Not recommended. Use $fillable to include fields or $guarded specifying fields that should be protected (e.g. $isAdmin)
+    protected $guarded = [];
+
     //Declare the table name in the DB: job_listings
     protected $table = 'job_listings';
 

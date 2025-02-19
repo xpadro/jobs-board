@@ -15,7 +15,11 @@ Route::get('/jobs_no_pagination', function ()  {
     //'employer' is the relationship name (the name of the function in Job.php)
     $jobs = Job::with('employer')->get();
 
-    return view('jobs', ['jobs' => $jobs]);
+    return view('jobs.index', ['jobs' => $jobs]);
+});
+
+Route::get('/jobs/create', function ()  {
+    return view(view: 'jobs.create');
 });
 
 Route::get('/jobs', function ()  {
@@ -26,15 +30,25 @@ Route::get('/jobs', function ()  {
     //$jobs = Job::with('employer')->simplePaginate();
 
     //Pagination with cursor
-    $jobs = Job::with('employer')->cursorPaginate();
+    //latest() adds a order by creation date to the SQL query
+    $jobs = Job::with('employer')->latest()->cursorPaginate();
 
-    return view('jobs', ['jobs' => $jobs]);
+    return view('jobs.index', ['jobs' => $jobs]);
 });
 
 Route::get('/jobs/{id}', function ($id)  {
     $job = Job::find($id);
     
-    return view('job', ['job' => $job]);
+    return view('jobs.show', ['job' => $job]);
+});
+
+Route::post('/jobs', function () {
+    $newJob = Job::create([
+        'title' => request('title'),
+        'salary' => request('salary'),
+        'employer_id' => 1
+    ]);
+    return redirect('/jobs');
 });
 
 Route::get('/contact', function () {
