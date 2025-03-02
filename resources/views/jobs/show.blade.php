@@ -9,7 +9,13 @@
         This job pays {{ $job->salary }} per year.
     </p>
 
-    <p class="mt-6">
-        <x-button href="/jobs/{{$job->id}}/edit">Edit Job</x-button>
-    </p>
+    <!-- Only if the defined policy in JobPolicy class is successful, show this html -->
+    <!-- If you wanted to reference the gate defined in AppServiceProvider, change 'edit' for 'edit-job' -->
+    <!-- Use policies over gates on non-trivial applications -->
+    @can('edit', $job)
+        <p class="mt-6">
+            <x-button href="/jobs/{{$job->id}}/edit">Edit Job</x-button>
+        </p>
+    @endcan
+    
 </x-layout>

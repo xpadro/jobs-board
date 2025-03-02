@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller {
     public function index() {
@@ -50,6 +53,15 @@ class JobController extends Controller {
     }
 
     public function edit(Job $job) {
+        // This is no longer necessary since the Gate is already handling it (returning 403)
+        /* if (Auth::guest()) {
+            return redirect('/login');
+        } */
+        
+        // Calls the gate named 'edit-job' defined in AppServiceProvider
+        // If you put it here, it will only apply to this endpoint. Has been moved to routes
+        //Gate::authorize('edit-job', $job);
+
         return view('jobs.edit', ['job' => $job]);
     }
 
