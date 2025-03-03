@@ -3,9 +3,10 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
+use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Route;
 use App\Models\Job;
-
+use Illuminate\Support\Facades\Mail;
 
 // This is a short hand for the commented code below
 Route::view('/', 'home');

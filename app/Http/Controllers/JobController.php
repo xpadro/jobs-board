@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\JobPosted;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller {
     public function index() {
@@ -49,6 +51,13 @@ class JobController extends Controller {
             'salary' => request('salary'),
             'employer_id' => 1
         ]);
+
+        // Send email
+        // To configure sender and SMTP settings, go to config/mail.php
+        // For testing purposes, you can register to https://mailtrap.io/
+        // Laravel is smart enough to resolve the email from the user model (newJob->employer->user)
+        Mail::to($newJob->employer->user)->send(new JobPosted($newJob));
+
         return redirect('/jobs');
     }
 
