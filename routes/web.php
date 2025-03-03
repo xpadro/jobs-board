@@ -3,6 +3,7 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
+use App\Jobs\TranslateJob;
 use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Route;
 use App\Models\Job;
@@ -53,3 +54,25 @@ Route::post('/register', [RegisterUserController::class, 'store']);
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy']);
+
+
+// Test - Send some work to a queue
+// For testing purpose, run 'php artisan queue:work' on terminal to process the jobs on the queue
+Route::get('test_queue', function() {
+    dispatch(function() {
+        logger('hello from the queue');
+    });
+
+    return 'Done';
+});
+
+
+// Using a Job instead of a closure
+Route::get('test_queue2', function() {
+    $job = Job::first();
+
+    // This only dispatches the job. You still need a worker to deal with it. For example 'php artisan queue:work'
+    TranslateJob::dispatch($job);
+
+    return 'Done';
+});

@@ -56,7 +56,10 @@ class JobController extends Controller {
         // To configure sender and SMTP settings, go to config/mail.php
         // For testing purposes, you can register to https://mailtrap.io/
         // Laravel is smart enough to resolve the email from the user model (newJob->employer->user)
-        Mail::to($newJob->employer->user)->send(new JobPosted($newJob));
+        //Mail::to($newJob->employer->user)->send(new JobPosted($newJob));
+
+        // Instead of sending the mail synchronously, we send it to a queue
+        Mail::to($newJob->employer->user)->queue(new JobPosted($newJob));
 
         return redirect('/jobs');
     }
